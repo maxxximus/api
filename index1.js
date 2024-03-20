@@ -110,7 +110,6 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-app.use(express.json())
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -128,9 +127,9 @@ const sql = require('mssql')
 
 
 const sqlConfig = {
-    server: '20.90.94.64', 
+    server: '51.141.237.233', 
     database: 'ecomm',
-    user: 'SA',
+    user: 'sa',
     password: 'MyStrongPassword777',
     pool: {
         min: 0, 
@@ -191,7 +190,12 @@ app.get("/item", async (req, res) => {
         await sql.connect(sqlConfig);
         var request = new sql.Request();
       
-        const query = `SELECT * FROM Product`
+        const query = `SELECT  p.design, p.itemname ,sizes.[size], p.[image], p.itemcode, p.product_id, p.price , p.details
+        FROM product p
+        inner JOIN item ON item.product_id=p.product_id
+        inner JOIN sizes ON  sizes.sizes_id = item.sizes_id
+        
+        `
 
    const result = await request.query(query)
   
@@ -290,11 +294,6 @@ WHERE product_id = @product_id `;
                   WHERE p.product_id = @product_id`
         
             const result = await request.query(query)
-
-
-
-
-
 
 
             
