@@ -126,23 +126,23 @@ const sql = require('mssql')
 
 
 
-const sqlConfig = {
-    server: '51.141.237.233', 
-    database: 'ecomm',
-    user: 'sa',
-    password: 'MyStrongPassword777',
-    pool: {
-        min: 0, 
-        max: 10, 
-        idleTimeoutMillis: 30000,
-    },
-    options:{
-        encrypt: false,
-        trustServerCertificate: true,
-    }
+// const sqlConfig = {
+//     server: '51.141.237.233', 
+//     database: 'ecomm',
+//     user: 'sa',
+//     password: 'MyStrongPassword777',
+//     pool: {
+//         min: 0, 
+//         max: 10, 
+//         idleTimeoutMillis: 30000,
+//     },
+//     options:{
+//         encrypt: false,
+//         trustServerCertificate: true,
+//     }
 
 
-}
+// }
 
 
 
@@ -166,6 +166,31 @@ const sqlConfig = {
 // }
 
 
+
+
+
+// aws server
+const sqlConfig = {
+    server: '16.170.166.75',
+    database: 'RobEcomm',
+    user: 'sa',
+    password: 'MyStrongPassword77',
+    pool: {
+        min: 0, 
+        max: 10, 
+        idleTimeoutMillis: 30000,
+    },
+    options:{
+        encrypt: false,
+        trustServerCertificate: true,
+    }
+
+
+}
+
+
+
+
 // const sqlConfig = {
 //     server: '172.187.184.173',
 //     database: 'RobEcomm',
@@ -185,6 +210,11 @@ const sqlConfig = {
 // }
 
 
+app.get("/", (req, res) => {
+    res.send("watch");
+  });
+  
+
 app.get("/item", async (req, res) => {
     try {
         await sql.connect(sqlConfig);
@@ -193,13 +223,28 @@ app.get("/item", async (req, res) => {
         const query = `SELECT  p.design, p.itemname ,sizes.[size], p.[image], p.itemcode, p.product_id, p.price , p.details
         FROM product p
         inner JOIN item ON item.product_id=p.product_id
-        inner JOIN sizes ON  sizes.sizes_id = item.sizes_id
-        
-        `
+        inner JOIN sizes ON  sizes.sizes_id = item.sizes_id `
 
-   const result = await request.query(query)
+
+ const result = await request.query(query)
+
+          
+        let result1 =  result.recordset.reduce((res, row) => {
+            let el = res.find(el => el["product_id"] === row["product_id"]);
+            // If we find the object in the output array simply update the objectives
+            if (el) {
+        el.size = [...el.size, ...row.size];
+            } else {
+                row.size = [row.size]
+            // If we _don't_ find the object, add to the output array.
+              res.push({ ...row});
+            }
+            return res;
+        }, [])
+
   
-   res.json(result)
+  
+   res.json(result1)
    } catch (error) {
        console.log(error);
        res.status(500).json({error: "Error connecting"})    

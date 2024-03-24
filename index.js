@@ -113,9 +113,6 @@ const countryCode = req.params.countryCode
 
 })
 
-app.get("/", (req, res) => {
-  res.send("run route");
-});
 app.get("/watch", (req, res) => {
   res.send("watch");
 });
