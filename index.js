@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3002;
 
+require('dotenv').config() // commonJS
+
+
 
 // const ff = 
 // [
@@ -100,7 +103,23 @@ const port = 3002;
 
 
 
+sqlConfig = {
+  server: process.env.SERVER,
+  database: 'RobEcomm',
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  pool: {
+      min: 0, 
+      max: 10, 
+      idleTimeoutMillis: 30000,
+  },
+  options:{
+      encrypt: false,
+      trustServerCertificate: true,
+  }
 
+
+}
 
 
 
@@ -124,90 +143,6 @@ const sql = require('mssql')
 
 
 
-
-
-// const sqlConfig = {
-//     server: '51.141.237.233', 
-//     database: 'ecomm',
-//     user: 'sa',
-//     password: 'MyStrongPassword777',
-//     pool: {
-//         min: 0, 
-//         max: 10, 
-//         idleTimeoutMillis: 30000,
-//     },
-//     options:{
-//         encrypt: false,
-//         trustServerCertificate: true,
-//     }
-
-
-// }
-
-
-
-
-// const sqlConfig = {
-//     server: '192.168.8.102',
-//     database: 'RobEcomm',
-//     user: 'SA',
-//     password: 'yourStrongPassword77',
-//     pool: {
-//         min: 0, 
-//         max: 10, 
-//         idleTimeoutMillis: 30000,
-//     },
-//     options:{
-//         encrypt: false,
-//         trustServerCertificate: true,
-//     }
-
-
-// }
-
-
-
-
-
-// aws server
-const sqlConfig = {
-    server: '16.170.166.75',
-    database: 'RobEcomm',
-    user: 'sa',
-    password: 'MyStrongPassword77',
-    pool: {
-        min: 0, 
-        max: 10, 
-        idleTimeoutMillis: 30000,
-    },
-    options:{
-        encrypt: false,
-        trustServerCertificate: true,
-    }
-
-
-}
-
-
-
-
-// const sqlConfig = {
-//     server: '172.187.184.173',
-//     database: 'RobEcomm',
-//     user: 'sa',
-//     password: 'Cheesecake!1',
-//     pool: {
-//         min: 0, 
-//         max: 10, 
-//         idleTimeoutMillis: 30000,
-//     },
-//     options:{
-//         encrypt: false,
-//         trustServerCertificate: true,
-//     }
-
-
-// }
 
 
 app.get("/", (req, res) => {
